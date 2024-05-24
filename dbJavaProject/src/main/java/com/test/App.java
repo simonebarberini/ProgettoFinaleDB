@@ -3,14 +3,54 @@ package com.test;
 import java.util.List;
 import java.util.Scanner;
 
+import com.test.dbService.UserDao;
 import com.test.model.User;
 
 public class App 
 {
     public static void main( String[] args ){
-        
-    }
+        UserDao utenteDAO = new UserDao();
+        Scanner scanner = new Scanner(System.in);
+        boolean running = true;
 
+        while (running) {
+            System.out.println("Scegli un'opzione:");
+            System.out.println("1. Registra un nuovo utente");
+            System.out.println("2. Visualizza tutti gli utenti");
+            System.out.println("3. Aggiorna un utente");
+            System.out.println("4. Cancella un utente");
+            System.out.println("5. Esci");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consuma il newline
+
+            switch (choice) {
+                case 1:
+                    registrazione(utenteDAO.getAllUtenti());
+                    // System.out.print("Inserisci username: ");
+                    // String userName = scanner.nextLine();
+                    // System.out.print("Inserisci l'email: ");
+                    // String email = scanner.nextLine();
+                    // System.out.print("Inserisci la password: ");
+                    // String password = scanner.nextLine();
+                    // System.out.print("Inserisci saldoIniziale: ");
+                    // scanner.nextLine();
+                    // double balance = scanner.nextDouble();
+                    // User nuovoUtente = new User(0, userName,password, email, balance);
+                    // utenteDAO.createUser(nuovoUtente);
+                    // System.out.println("Utente inserito con successo!");
+                    // break;
+
+                case 2:
+                    List<User> users = utenteDAO.getAllUtenti();
+                    System.out.println("Elenco utenti:");
+                    for (User user : users) {
+                        System.out.println(user.toString());
+                    }
+                    break;
+            }
+        }
+        scanner.close();
+    }
 
     public static boolean login(String Username, String password, List<User> userList) {
         Scanner inLog = new Scanner(System.in);
@@ -53,6 +93,7 @@ public class App
                             return false;
                         }
                     }
+                    inLog.close();
                 }
             }
             if (!UsernameTrovata) {
@@ -88,6 +129,7 @@ public class App
 
     public static boolean registrazione(List<User> userList) {
         Scanner inReg = new Scanner(System.in);
+        UserDao dao = new UserDao();
         Scanner inRegDoub = new Scanner(System.in);
         System.out.println("Inserisci un'Username");
         String Username = inReg.nextLine();
@@ -132,9 +174,12 @@ public class App
             // Crea un nuovo oggetto User e lo aggiunge alla lista degli utenti registrati
             User nuovoUser = new User(0, username, password, Username, balance);
             userList.add(nuovoUser);
+            dao.createUser(nuovoUser);
+            
             System.out.println("User registrato con successo");
             return true;
         }
+        
     }
 
 
