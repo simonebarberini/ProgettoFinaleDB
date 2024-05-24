@@ -45,5 +45,9 @@ public class User {
         this.balance = balance;
     }
 
+    public void versamento(double money){
+        
+    }
+
     
 }
